@@ -102,6 +102,7 @@ const data = ref();
 					)
 				"
 			></div>
+			<!-- We use the "novatorem" theme because it is the least prone to shifting the animated bars (it only happens when the artist's name has more than 50 characters, which should be very rare) -->
 			<img
 				:class="
 					cx(
