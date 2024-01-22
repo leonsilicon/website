@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"build": "tsx ./scripts/build.ts",
-		"dev": "nuxt dev",
+		"dev": "tunnel 3000 -- nuxt dev --port PORT",
 		"format": "dprint fmt",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
