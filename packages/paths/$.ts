@@ -5,4 +5,5 @@ const monorepoDirpath = join(import.meta.url, '../..');
 export const packageDirpaths = {
 	monorepo: monorepoDirpath,
 	patching: path.join(monorepoDirpath, 'packages/patching'),
+	database: path.join(monorepoDirpath, 'packages/database'),
 };

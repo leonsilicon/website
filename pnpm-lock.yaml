@@ -116,6 +116,9 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
     devDependencies:
+      '@-/paths':
+        specifier: workspace:*
+        version: link:../paths
       '@nuxtjs/tailwindcss':
         specifier: ^6.11.0
         version: 6.11.0

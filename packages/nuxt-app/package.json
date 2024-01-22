@@ -30,6 +30,7 @@
 		"query-string": "^8.1.0"
 	},
 	"devDependencies": {
+		"@-/paths": "workspace:*",
 		"@nuxtjs/tailwindcss": "^6.11.0",
 		"@tunnel/cli": "^0.4.5",
 		"@types/luxon": "^3.4.2",

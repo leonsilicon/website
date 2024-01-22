@@ -1,4 +1,5 @@
 import { execa } from 'execa';
+import { packageDirpaths } from '@-/paths'
 
 await execa('pnpm', ['exec', 'convex', 'deploy'], {
 	env: {
@@ -6,6 +7,7 @@ await execa('pnpm', ['exec', 'convex', 'deploy'], {
 		CONVEX_DEPLOYMENT: 'superb-cheetah-980',
 	},
 	stdio: 'inherit',
+	cwd: packageDirpaths.database
 });
 
 process.argv[2] = 'build';
