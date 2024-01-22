@@ -8,7 +8,7 @@
 		"#utils/*": "./utils/*"
 	},
 	"scripts": {
-		"build": "nuxt build",
+		"build": "tsx ./scripts/build.ts",
 		"dev": "nuxt dev",
 		"format": "dprint fmt",
 		"generate": "nuxt generate",
