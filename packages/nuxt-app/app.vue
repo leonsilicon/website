@@ -61,7 +61,7 @@ const data = await http.query(api.v.userTodayData.get, {
 								}}</template>
 								<Icon v-else name="f7:zzz" class="ml-1.5" />
 							</div>
-							<div class="font-medium">Recharging ⚡</div>
+							<div class="font-medium">Recharge ⚡</div>
 							<template v-for="timeEntry of data.timeEntries">
 								<div class="font-mono">
 									{{

@@ -28,111 +28,100 @@ export const updateFromApis = internalAction({
 			{ from: { user } },
 		);
 
-		// To prevent getting rate limited, we only re-fetch data at most once every 10 minutes
-		if (
-			userTodayData === null ||
-			DateTime.fromSeconds(userTodayData.lastFetchedUnixTimestamp).diffNow()
-					.as('minutes') >
-				10
-		) {
-			const eightsleepTokenData = await ctx.runQuery(
-				api.v.userEightsleepTokenData.get,
-				{ from: { user } },
-			);
+		const eightsleepTokenData = await ctx.runQuery(
+			api.v.userEightsleepTokenData.get,
+			{ from: { user } },
+		);
 
-			const eightsleep = new Eightsleep(ctx, {
-				credentials: {
-					clientId: EIGHTSLEEP_CLIENT_ID,
-					clientSecret: EIGHTSLEEP_CLIENT_SECRET,
-					email: EIGHTSLEEP_EMAIL,
-					password: EIGHTSLEEP_PASSWORD,
-				},
-				tokenData: eightsleepTokenData,
-				websiteUser: user,
-			});
+		const eightsleep = new Eightsleep(ctx, {
+			credentials: {
+				clientId: EIGHTSLEEP_CLIENT_ID,
+				clientSecret: EIGHTSLEEP_CLIENT_SECRET,
+				email: EIGHTSLEEP_EMAIL,
+				password: EIGHTSLEEP_PASSWORD,
+			},
+			tokenData: eightsleepTokenData,
+			websiteUser: user,
+		});
 
-			const yesterday = DateTime.now().minus({ days: 1 }).toJSDate();
-			const today = DateTime.now().toJSDate();
+		const today = DateTime.local().setZone('America/Toronto').toJSDate();
 
-			const yesterdayAggregateData = await eightsleep.getAggregateData({
-				date: yesterday,
-			});
-			const todayAggregateData = await eightsleep.getAggregateData({
-				date: today,
-			});
+		const todayAggregateData = await eightsleep.getAggregateData({
+			date: today,
+		});
 
-			const yesterdayBedtime = yesterdayAggregateData.periods[0].samples.find((
-				sample,
-			) => sample.date === format(yesterday, 'yyyy-MM-dd'))?.avg.find((avg) =>
-				avg.name === 'bedtime'
-			)?.value.replace(/:\d\d$/, '') ?? null;
-			const todayWakeup = todayAggregateData.periods[0].samples.find((sample) =>
-				sample.date === format(today, 'yyyy-MM-dd')
-			)?.avg.find((avg) =>
-				avg.name === 'wakeup'
-			)?.value.replace(/:\d\d$/, '') ?? null;
+		const yesterdayBedtime = todayAggregateData.periods[0].samples.find((
+			sample,
+		) => sample.date === format(today, 'yyyy-MM-dd'))?.avg.find((avg) =>
+			avg.name === 'bedtime'
+		)?.value.replace(/:\d\d$/, '') ?? null;
+		const todayWakeup = todayAggregateData.periods[0].samples.find((sample) =>
+			sample.date === format(today, 'yyyy-MM-dd')
+		)?.avg.find((avg) =>
+			avg.name === 'wakeup'
+		)?.value.replace(/:\d\d$/, '') ?? null;
 
-			const toggl = new Toggl({
-				auth: {
-					token: TOGGL_TRACK_API_TOKEN,
-				},
-			});
+		const toggl = new Toggl({
+			auth: {
+				token: TOGGL_TRACK_API_TOKEN,
+			},
+		});
 
-			const allTimeEntries = await toggl.timeEntry.list({
-				since: DateTime.now().setZone('America/Toronto').set({
-					hour: 0,
-					minute: 0,
-					second: 0,
-				}).toUnixInteger().toString(),
-			});
+		const allTimeEntries = await toggl.timeEntry.list({
+			since: DateTime.now().setZone('America/Toronto').set({
+				hour: 0,
+				minute: 0,
+				second: 0,
+			}).toUnixInteger().toString(),
+		});
 
-			const publicTimeEntries = allTimeEntries
-				.filter((timeEntry: any) =>
-					timeEntry.description.includes('[public')
-				)
-				.map((timeEntry: any) => {
-					const publicDescription = timeEntry.description.match(
-						/\[public:\s*(.*)\]/,
-					);
-					if (publicDescription !== null) {
-						return {
-							...timeEntry,
-							description: publicDescription[1],
-						};
-					}
-
+		const publicTimeEntries = allTimeEntries
+			.filter((timeEntry: any) =>
+				timeEntry.description.includes('[public') &&
+				!timeEntry.server_deleted_at
+			)
+			.map((timeEntry: any) => {
+				const publicDescription = timeEntry.description.match(
+					/\[public:\s*(.*)\]/,
+				);
+				if (publicDescription !== null) {
 					return {
 						...timeEntry,
-						description: timeEntry.description.replace(
-							'[public]',
-							'',
-						).trim(),
+						description: publicDescription[1],
 					};
-				});
+				}
 
-			userTodayData = {
-				todayWakeup,
-				yesterdayBedtime,
-				timeEntries: publicTimeEntries.map((timeEntry: any) => {
-					return {
-						description: timeEntry.description as string,
-						atUnixTimestamp: DateTime.fromISO(timeEntry.at as string)
-							.toUnixInteger(),
-						stopUnixTimestamp: timeEntry.stop === null ?
-							null :
-							DateTime.fromISO(timeEntry.stop).toUnixInteger(),
-					};
-				}),
-				lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
-			};
-
-			await ctx.runMutation(api.v.userTodayData.upsert, {
-				data: {
-					user,
-					...userTodayData,
-				},
+				return {
+					...timeEntry,
+					description: timeEntry.description.replace(
+						'[public]',
+						'',
+					).trim(),
+				};
 			});
-		}
+
+		userTodayData = {
+			todayWakeup,
+			yesterdayBedtime,
+			timeEntries: publicTimeEntries.map((timeEntry: any) => {
+				return {
+					description: timeEntry.description as string,
+					atUnixTimestamp: DateTime.fromISO(timeEntry.at as string)
+						.toUnixInteger(),
+					stopUnixTimestamp: timeEntry.stop === null ?
+						null :
+						DateTime.fromISO(timeEntry.stop).toUnixInteger(),
+				};
+			}),
+			lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
+		};
+
+		await ctx.runMutation(api.v.userTodayData.upsert, {
+			data: {
+				user,
+				...userTodayData,
+			},
+		});
 
 		return userTodayData;
 	},
