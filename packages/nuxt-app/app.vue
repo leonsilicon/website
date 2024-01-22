@@ -21,7 +21,7 @@ const data = ref();
 	<div class="flex h-full items-center justify-center">
 		<div class="relative">
 			<div
-				class="flex flex-col gap-2 border rounded-md p-2 border-gray-700 w-96 min-w-96 relative z-10"
+				class="flex flex-col gap-2 border rounded-md p-[12px] border-gray-700 w-[392px] min-w-[392px] relative z-10"
 			>
 				<div class="flex flex-row gap-2 items-center">
 					<NuxtImg
@@ -89,31 +89,33 @@ const data = ref();
 					</div>
 				</div>
 			</div>
+			<!-- Hides the artist + song name -->
 			<div
-				class="absolute bg-white top-0 left-0 right-0 bottom-[1rem] -z-10"
+				class="absolute bg-white top-0 left-0 right-0 bottom-[10px] -z-10"
 			></div>
+			<!-- Hides the cover image -->
 			<div
 				:class="
 					cx(
-						'absolute bg-white top-0 left-0 -bottom-[0.88rem] -z-10',
-						data ? 'w-[72px]' : 'w-[7rem]',
+						'absolute bg-white top-0 left-[-2px] -bottom-[0.88rem] -z-10',
+						data ? 'w-[90px]' : 'w-[7rem]',
 					)
 				"
 			></div>
 			<img
 				:class="
 					cx(
-						'absolute -z-20',
-						data ? 'left-[-2px] -bottom-[0.88rem]' : 'left-8 -bottom-[0.88rem]',
+						'absolute -z-20 w-[320px] h-[40px] -bottom-[5px]',
+						data ? 'left-[-8px]' : 'left-[92px]',
 					)
 				"
-				src="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&cover_image=true&theme=natemoo-re&show_offline=false&background_color=ffffff&interchange=true&bar_color=f5b13d&bar_color_cover=true"
+				src="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&cover_image=true&theme=novatorem&show_offline=false&background_color=121212&interchange=false&bar_color=53b14f&bar_color_cover=true"
 			/>
 			<a
 				:class="
 					cx(
-						'absolute bottom-0 left-[7.25rem] w-[220px] h-[8px] z-10',
-						data ? 'left-[80px]' : 'left-[7.25rem]',
+						'absolute bottom-0 w-[200px] h-[5px] z-10',
+						data ? 'left-[92px]' : 'left-[7.25rem]',
 					)
 				"
 				href="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&redirect=true"
