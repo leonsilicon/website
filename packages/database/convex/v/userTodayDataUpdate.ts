@@ -112,7 +112,7 @@ export const updateFromApis = internalAction({
 						null :
 						DateTime.fromISO(timeEntry.stop).toUnixInteger(),
 				};
-			}),
+			}).reverse(),
 			lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
 		};
 

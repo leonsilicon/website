@@ -5,18 +5,16 @@ import { format } from "date-fns";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@-/database";
 
-let data: any;
-if (typeof window !== "undefined") {
+const data = ref();
+(async () => {
 	const { convexUrl } = useAppConfig();
 	const http = new ConvexHttpClient(convexUrl);
-	data = await http.query(api.v.userTodayData.get, {
+	data.value = await http.query(api.v.userTodayData.get, {
 		from: {
 			user: { username: "leondreamed" },
 		},
 	});
-} else {
-	data = null;
-}
+})();
 </script>
 
 <template>
@@ -106,7 +104,7 @@ if (typeof window !== "undefined") {
 				:class="
 					cx(
 						'absolute -z-20',
-						data ? 'left-[-2px] -bottom-[0.88rem]' : 'left-8 -bottom-[2px]',
+						data ? 'left-[-2px] -bottom-[0.88rem]' : 'left-8 -bottom-[0.88rem]',
 					)
 				"
 				src="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&cover_image=true&theme=natemoo-re&show_offline=false&background_color=ffffff&interchange=true&bar_color=f5b13d&bar_color_cover=true"
