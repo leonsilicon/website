@@ -7,6 +7,6 @@ export interface TodayData {
 
 export interface TimeEntry {
 	description: string;
-	atUnixTimestamp: number;
+	startUnixTimestamp: number;
 	stopUnixTimestamp: number | null;
 }

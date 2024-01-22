@@ -35,7 +35,7 @@ export const upsert = internalMutation({
 			yesterdayBedtime: vNullable(v.string()),
 			timeEntries: v.array(v.object({
 				description: v.string(),
-				atUnixTimestamp: v.number(),
+				startUnixTimestamp: v.number(),
 				stopUnixTimestamp: vNullable(v.number()),
 			})),
 			lastFetchedUnixTimestamp: v.number(),

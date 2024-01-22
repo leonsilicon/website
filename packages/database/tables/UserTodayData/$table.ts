@@ -1,5 +1,5 @@
 import { v } from 'convex/values';
-import { table, vNullable } from 'corvex';
+import { table, vDeprecated, vNew, vNullable } from 'corvex';
 
 export const UserTodayData = table(
 	'User',
@@ -10,8 +10,11 @@ export const UserTodayData = table(
 		todayWakeup: vNullable(v.string()),
 		timeEntries: v.array(v.object({
 			description: v.string(),
-			atUnixTimestamp: v.number(),
+			startUnixTimestamp: vNew(v.number()),
 			stopUnixTimestamp: vNullable(v.number()),
+
+			/** @deprecated */
+			atUnixTimestamp: vDeprecated<number>('Use `startUnixTimestamp` instead'),
 		})),
 	}),
 	(t) => t.index('by_user', ['user']),

@@ -106,7 +106,7 @@ export const updateFromApis = internalAction({
 			timeEntries: publicTimeEntries.map((timeEntry: any) => {
 				return {
 					description: timeEntry.description as string,
-					atUnixTimestamp: DateTime.fromISO(timeEntry.at as string)
+					startUnixTimestamp: DateTime.fromISO(timeEntry.start as string)
 						.toUnixInteger(),
 					stopUnixTimestamp: timeEntry.stop === null ?
 						null :

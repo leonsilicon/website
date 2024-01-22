@@ -5,13 +5,18 @@ import { format } from "date-fns";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@-/database";
 
-const { convexUrl } = useAppConfig();
-const http = new ConvexHttpClient(convexUrl);
-const data = await http.query(api.v.userTodayData.get, {
-	from: {
-		user: { username: "leondreamed" },
-	},
-});
+let data: any;
+if (typeof window !== "undefined") {
+	const { convexUrl } = useAppConfig();
+	const http = new ConvexHttpClient(convexUrl);
+	data = await http.query(api.v.userTodayData.get, {
+		from: {
+			user: { username: "leondreamed" },
+		},
+	});
+} else {
+	data = null;
+}
 </script>
 
 <template>
@@ -66,7 +71,7 @@ const data = await http.query(api.v.userTodayData.get, {
 								<div class="font-mono">
 									{{
 										DateTime.fromSeconds(
-											timeEntry.atUnixTimestamp,
+											timeEntry.startUnixTimestamp,
 										).toLocaleString(DateTime.TIME_24_SIMPLE)
 									}}
 									-
