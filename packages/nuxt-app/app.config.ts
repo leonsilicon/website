@@ -1,3 +1,5 @@
 export default defineAppConfig({
-	convexUrl: 'https://neat-basilisk-216.convex.cloud',
+	convexUrl: process.env.NODE_ENV === 'production' ?
+		'https://superb-cheetah-980.convex.cloud' :
+		'https://neat-basilisk-216.convex.cloud',
 });

@@ -66,7 +66,7 @@ jobs:
           path: |
             packages/nuxt-app/dist
             packages/nuxt-app/.nuxt
-          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('packages/nuxt-app/dist') }}
+          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('dist') }}
           restore-keys: |
             ${{ runner.os }}-nuxt-build-
 
@@ -75,18 +75,20 @@ jobs:
           path: |
             packages/nuxt-app/dist
             packages/nuxt-app/.nuxt
-          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('packages/nuxt-app/dist') }}
+          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('dist') }}
           restore-keys: |
             ${{ runner.os }}-nuxt-build-
       - name: Static HTML export with Nuxt
         run: pnpm --filter=@-/nuxt-app build
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
       - uses: actions/cache/save@v3
         if: always()
         with:
           path: |
             packages/nuxt-app/dist
             packages/nuxt-app/.nuxt
-          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('packages/nuxt-app/dist') }}
+          key: ${{ runner.os }}-nuxt-build-${{ hashFiles('dist') }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
