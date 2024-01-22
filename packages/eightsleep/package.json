@@ -1,0 +1,9 @@
+{
+	"name": "@-/eightsleep",
+	"type": "module",
+	"exports": "./$.ts",
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"date-fns": "^3.3.0"
+	}
+}

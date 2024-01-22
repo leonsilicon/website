@@ -1,0 +1,40 @@
+{
+	"name": "@-/nuxt-app",
+	"private": true,
+	"type": "module",
+	"imports": {
+		"#database/*": "./database/*",
+		"#types/*": "./types/*",
+		"#utils/*": "./utils/*"
+	},
+	"scripts": {
+		"build": "nuxt build",
+		"dev": "nuxt dev",
+		"format": "dprint fmt",
+		"generate": "nuxt generate",
+		"preview": "nuxt preview",
+		"postinstall": "nuxt prepare"
+	},
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"@-/eightsleep": "workspace:*",
+		"@-/env": "workspace:*",
+		"@nuxt/image": "^1.3.0",
+		"date-fns": "^3.3.0",
+		"luxon": "^3.4.4",
+		"outdent": "^0.8.0",
+		"pathe": "^1.1.2",
+		"toggl-track": "^0.8.0",
+		"tsx": "^4.7.0",
+		"query-string": "^8.1.0"
+	},
+	"devDependencies": {
+		"@nuxtjs/tailwindcss": "^6.11.0",
+		"@tunnel/cli": "^0.4.5",
+		"@types/luxon": "^3.4.2",
+		"nuxt": "^3.9.3",
+		"nuxt-icon": "^0.6.8",
+		"vue": "^3.4.14",
+		"vue-router": "^4.2.5"
+	}
+}

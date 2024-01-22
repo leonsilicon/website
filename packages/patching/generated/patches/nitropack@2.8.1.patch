@@ -1,0 +1,57 @@
+diff --git a/dist/shared/nitro.4b3fd674.mjs b/dist/shared/nitro.4b3fd674.mjs
+index edbcd1f48eb3e2644501b7f217ac685d42d8b4d5..bc367d32700c5e04e8fffea887ff6dc89572163f 100644
+--- a/dist/shared/nitro.4b3fd674.mjs
++++ b/dist/shared/nitro.4b3fd674.mjs
+@@ -193,12 +193,12 @@ function errorHandler(error, event) {
+   );
+ }
+ 
+-function initWorker(filename) {
++function initWorker(filename, options) {
+   if (!existsSync(filename)) {
+     return null;
+   }
+   return new Promise((resolve2, reject) => {
+-    const worker = new Worker(filename);
++    const worker = new Worker(filename, options);
+     worker.once("exit", (code) => {
+       reject(
+         new Error(
+@@ -268,7 +268,13 @@ function createDevServer(nitro) {
+     const oldWorker = currentWorker;
+     currentWorker = null;
+     await killWorker(oldWorker, nitro);
+-    currentWorker = await initWorker(workerEntry);
++    currentWorker = await initWorker(
++	resolve(
++		(await import('node:url')).fileURLToPath(import.meta.url),
++		'../worker-wrapper.mjs'
++	),
++	{ argv: [workerEntry] },
++);
+     const buildInfoPath = resolve(nitro.options.buildDir, "nitro.json");
+     const buildInfo = {
+       date: (/* @__PURE__ */ new Date()).toJSON(),
+diff --git a/dist/shared/worker-wrapper.mjs b/dist/shared/worker-wrapper.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..4ee4795ed77a35c96bbebb3dddc17d497fa0599e
+--- /dev/null
++++ b/dist/shared/worker-wrapper.mjs
+@@ -0,0 +1,17 @@
++import { parentPort } from 'node:worker_threads';
++import { fork } from 'node:child_process';
++
++const forkProcess = fork(process.argv[2], {
++	env: {
++		...process.env,
++		NODE_OPTIONS: '--import tsx'
++	}
++});
++
++forkProcess.on('message', (msg) => {
++	parentPort.postMessage(msg);
++})
++
++parentPort.on("message", async (msg) => {
++	forkProcess.send(msg);
++});

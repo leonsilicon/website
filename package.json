@@ -1,0 +1,14 @@
+{
+	"name": "@-/monorepo",
+	"devDependencies": {
+		"@tunnel/tsconfig": "^0.0.0",
+		"dprint": "^0.45.0",
+		"tsx": "^4.7.0",
+		"typescript": "^5.3.3"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"nitropack@2.8.1": "packages/patching/generated/patches/nitropack@2.8.1.patch"
+		}
+	}
+}

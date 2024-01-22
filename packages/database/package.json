@@ -1,0 +1,21 @@
+{
+	"name": "@-/database",
+	"type": "module",
+	"imports": {
+		"#utils/*": "./utils/*"
+	},
+	"exports": {
+		".": "./$.ts"
+	},
+	"scripts": {
+		"dev": "convex dev"
+	},
+	"dependencies": {
+		"@-/env": "workspace:*",
+		"convex": "^1.8.0",
+		"corvex": "^0.0.28",
+		"map-obj": "^5.0.2",
+		"onetime": "^7.0.0",
+		"ts-retry-promise": "^0.8.0"
+	}
+}

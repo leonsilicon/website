@@ -1,0 +1,9 @@
+{
+	"extends": "@tunnel/tsconfig",
+	"references": [
+		{
+			"path": "./packages/nuxt-app/tsconfig.json"
+		}
+	],
+	"include": ["./packages"]
+}

@@ -1,0 +1,20 @@
+{
+	"name": "@-/patching",
+	"type": "module",
+	"imports": {
+		"#patches/*": "./patches/*",
+		"#types/*": "./types/*",
+		"#utils/*": "./utils/*"
+	},
+	"scripts": {
+		"generate-patches": "tsx ./scripts/generate-patches.ts"
+	},
+	"dependencies": {
+		"@-/paths": "workspace:*",
+		"commander": "^11.1.0",
+		"execa": "^8.0.1",
+		"outdent": "^0.8.0",
+		"pathe": "^1.1.2",
+		"tmp-promise": "^3.0.3"
+	}
+}
