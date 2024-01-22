@@ -33,6 +33,7 @@
 		"@nuxtjs/tailwindcss": "^6.11.0",
 		"@tunnel/cli": "^0.4.5",
 		"@types/luxon": "^3.4.2",
+		"convex": "^1.8.0",
 		"nuxt": "^3.9.3",
 		"nuxt-icon": "^0.6.8",
 		"vue": "^3.4.14",

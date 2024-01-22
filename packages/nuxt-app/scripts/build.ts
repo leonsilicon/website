@@ -1,9 +1,11 @@
 import { execa } from 'execa';
 
-await execa('pnpm exec convex deploy', {
+await execa('pnpm', ['exec', 'convex', 'deploy'], {
 	env: {
 		CONVEX_DEPLOY_KEY: process.env.CONVEX_DEPLOY_KEY,
+		CONVEX_DEPLOYMENT: 'superb-cheetah-980',
 	},
+	stdio: 'inherit',
 });
 
 process.argv[2] = 'build';
