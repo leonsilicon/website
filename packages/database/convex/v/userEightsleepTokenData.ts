@@ -1,8 +1,7 @@
 import { v } from 'convex/values';
-import { protectedMutation } from '../../utils/mutation.ts';
-import { protectedQuery } from '../../utils/query.ts';
+import { internalMutation, internalQuery } from '../_generated/server.js';
 
-export const get = protectedQuery({
+export const get = internalQuery({
 	args: {
 		from: v.object({
 			user: v.id('User'),
@@ -16,7 +15,7 @@ export const get = protectedQuery({
 	},
 });
 
-export const create = protectedMutation({
+export const create = internalMutation({
 	args: {
 		data: v.object({
 			user: v.id('User'),

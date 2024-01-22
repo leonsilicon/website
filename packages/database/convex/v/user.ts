@@ -1,8 +1,8 @@
 import { v } from 'convex/values';
 import { Id } from '../_generated/dataModel.js';
-import { protectedMutation } from '../../utils/mutation.ts';
+import { internalMutation } from '../_generated/server.js';
 
-export const ensure = protectedMutation({
+export const ensure = internalMutation({
 	args: {
 		username: v.string(),
 	},

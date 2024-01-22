@@ -1,6 +1,7 @@
-import { api, getConvex } from '@-/database';
+import { api } from '@-/database';
+import type { GenericActionCtx } from 'convex/server';
 import { format } from 'date-fns';
-import { Id } from '../database/convex/_generated/dataModel.js';
+import { DataModel, Id } from '../database/convex/_generated/dataModel.js';
 import { EightsleepCredentials, EightsleepTokenData } from './types/auth.ts';
 
 const TOKEN_TIME_BUFFER_SECONDS = 120;
@@ -13,11 +14,13 @@ const defaultHeaders = {
 };
 
 export class Eightsleep {
+	ctx: GenericActionCtx<DataModel>;
 	websiteUser: Id<'User'>;
 	credentials: EightsleepCredentials;
 	tokenData: EightsleepTokenData | null;
 
 	constructor(
+		ctx: GenericActionCtx<DataModel>,
 		{
 			websiteUser,
 			credentials,
@@ -28,13 +31,13 @@ export class Eightsleep {
 			tokenData: EightsleepTokenData | null;
 		},
 	) {
+		this.ctx = ctx;
 		this.websiteUser = websiteUser;
 		this.credentials = credentials;
 		this.tokenData = tokenData;
 	}
 
 	async setTokenData(): Promise<EightsleepTokenData> {
-		const convex = getConvex();
 		const response = await fetch(
 			'https://auth-api.8slp.net/v1/tokens',
 			{
@@ -68,7 +71,7 @@ export class Eightsleep {
 			expirationUnixTimestamp: Date.now() / 1000 + expires_in,
 		};
 
-		await convex.mutation(api.v.userEightsleepTokenData.create, {
+		await this.ctx.runMutation(api.v.userEightsleepTokenData.create, {
 			data: {
 				user: this.websiteUser,
 				...tokenData,

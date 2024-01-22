@@ -1,23 +1,33 @@
+import { Id } from '#convex/_generated/dataModel.js';
+import { internalMutation, query } from '#convex/_generated/server.js';
 import { v } from 'convex/values';
 import { vNullable } from 'corvex';
-import { protectedMutation } from '../../utils/mutation.ts';
-import { protectedQuery } from '../../utils/query.ts';
 
-export const get = protectedQuery({
+export const get = query({
 	args: {
 		from: v.object({
-			user: v.id('User'),
+			user: v.union(v.id('User'), v.object({ username: v.string() })),
 		}),
 	},
-	async handler(ctx, { from }) {
+	async handler(ctx, { from: { user } }) {
+		let userId: Id<'User'>;
+		if (typeof user === 'string') {
+			userId = user;
+		} else {
+			userId = (await ctx.db.query('User').withIndex(
+				'by_username',
+				(q) => q.eq('username', user.username),
+			).unique())!._id;
+		}
+
 		return ctx.db.query('UserTodayData').withIndex(
 			'by_user',
-			(q) => q.eq('user', from.user),
+			(q) => q.eq('user', userId),
 		).unique();
 	},
 });
 
-export const upsert = protectedMutation({
+export const upsert = internalMutation({
 	args: {
 		data: v.object({
 			user: v.id('User'),

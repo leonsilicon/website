@@ -2,6 +2,8 @@
 	"name": "@-/database",
 	"type": "module",
 	"imports": {
+		"#convex/*": "./convex/*",
+		"#types/*": "./types/*",
 		"#utils/*": "./utils/*"
 	},
 	"exports": {
@@ -11,11 +13,14 @@
 		"dev": "convex dev"
 	},
 	"dependencies": {
+		"@-/eightsleep": "workspace:*",
 		"@-/env": "workspace:*",
 		"convex": "^1.8.0",
 		"corvex": "^0.0.28",
+		"date-fns": "^3.3.1",
 		"map-obj": "^5.0.2",
 		"onetime": "^7.0.0",
+		"toggl-track": "^0.8.0",
 		"ts-retry-promise": "^0.8.0"
 	}
 }

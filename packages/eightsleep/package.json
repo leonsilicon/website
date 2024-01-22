@@ -4,6 +4,7 @@
 	"exports": "./$.ts",
 	"dependencies": {
 		"@-/database": "workspace:*",
+		"convex": "^1.8.0",
 		"date-fns": "^3.3.0"
 	}
 }

@@ -14,9 +14,11 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as crons from "../crons.js";
 import type * as v_user from "../v/user.js";
 import type * as v_userEightsleepTokenData from "../v/userEightsleepTokenData.js";
 import type * as v_userTodayData from "../v/userTodayData.js";
+import type * as v_userTodayDataUpdate from "../v/userTodayDataUpdate.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -27,9 +29,11 @@ import type * as v_userTodayData from "../v/userTodayData.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  crons: typeof crons;
   "v/user": typeof v_user;
   "v/userEightsleepTokenData": typeof v_userEightsleepTokenData;
   "v/userTodayData": typeof v_userTodayData;
+  "v/userTodayDataUpdate": typeof v_userTodayDataUpdate;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import type { TodayData } from "#types/today.ts";
+import cx from "clsx";
 import { DateTime } from "luxon";
 import { format } from "date-fns";
-import queryString from "query-string";
+import { ConvexHttpClient } from "convex/browser";
+import { api } from "@-/database";
 
-const route = useRoute();
-const { data } = await useFetch<TodayData>(
-	`/api/today?${queryString.stringify(route.query)}`,
-);
+const { convexUrl } = useAppConfig();
+const http = new ConvexHttpClient(convexUrl);
+const data = await http.query(api.v.userTodayData.get, {
+	from: {
+		user: { username: "leondreamed" },
+	},
+});
 </script>
 
 <template>
@@ -71,7 +75,7 @@ const { data } = await useFetch<TodayData>(
 											timeEntry.stopUnixTimestamp,
 										).toLocaleString(DateTime.TIME_24_SIMPLE)
 									}}</template>
-									<span class="italic">now</span>
+									<span v-else class="italic">now</span>
 								</div>
 								<div class="font-medium">
 									{{ timeEntry.description }}
@@ -86,14 +90,29 @@ const { data } = await useFetch<TodayData>(
 				class="absolute bg-white top-0 left-0 right-0 bottom-[1rem] -z-10"
 			></div>
 			<div
-				class="absolute bg-white top-0 left-0 w-[7rem] -bottom-[0.88rem] -z-10"
+				:class="
+					cx(
+						'absolute bg-white top-0 left-0 -bottom-[0.88rem] -z-10',
+						data ? 'w-[72px]' : 'w-[7rem]',
+					)
+				"
 			></div>
 			<img
-				class="absolute -bottom-[0.88rem] left-8 -z-20"
+				:class="
+					cx(
+						'absolute -bottom-[2px] -z-20',
+						data ? 'left-[-2px]' : 'left-8',
+					)
+				"
 				src="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&cover_image=true&theme=natemoo-re&show_offline=false&background_color=ffffff&interchange=true&bar_color=f5b13d&bar_color_cover=true"
 			/>
 			<a
-				class="absolute bottom-0 left-[7.25rem] right-[3rem] h-[8px] z-10"
+				:class="
+					cx(
+						'absolute bottom-0 left-[7.25rem] w-[220px] h-[8px] z-10',
+						data ? 'left-[80px]' : 'left-[7.25rem]',
+					)
+				"
 				href="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&redirect=true"
 			></a>
 		</div>
