@@ -100,8 +100,8 @@ const data = await http.query(api.v.userTodayData.get, {
 			<img
 				:class="
 					cx(
-						'absolute -bottom-[2px] -z-20',
-						data ? 'left-[-2px]' : 'left-8',
+						'absolute -z-20',
+						data ? 'left-[-2px] -bottom-[0.88rem]' : 'left-8 -bottom-[2px]',
 					)
 				"
 				src="https://spotify-github-profile.vercel.app/api/view?uid=31m2rvl5monwbxr7ubbsjkucybcy&cover_image=true&theme=natemoo-re&show_offline=false&background_color=ffffff&interchange=true&bar_color=f5b13d&bar_color_cover=true"
