@@ -63,7 +63,7 @@ const data = ref();
 								}}</template>
 								<Icon v-else name="f7:zzz" class="ml-1.5" />
 							</div>
-							<div class="font-medium">Recharge ⚡</div>
+							<div class="font-medium">Recharged ⚡</div>
 							<template v-for="timeEntry of data.timeEntries">
 								<div class="font-mono">
 									{{
