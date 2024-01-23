@@ -6,7 +6,7 @@ A minimalist personal website (most of my engineering efforts are spent building
 
 - Nuxt 3 (a Vue 3 meta-framework) w/ [patch to support monorepos](#why-is-nuxtjs-patched)
 - TailwindCSS
-- [Convex](https://convex.dev) w/ [corvex](https://github.com/Tunnel-Labs/corvex) (a small wrapper ORM + utilities around Convex)
+- [Convex](https://convex.dev) w/ [corvex](https://github.com/Tunnel-Labs/corvex) (a small wrapper ORM + utilities for Convex)
 
 ### Why is Nuxt.js patched?
 
