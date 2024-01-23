@@ -15,7 +15,7 @@ export const get = internalQuery({
 	},
 });
 
-export const create = internalMutation({
+export const upsert = internalMutation({
 	args: {
 		data: v.object({
 			user: v.id('User'),
@@ -26,6 +26,16 @@ export const create = internalMutation({
 		}),
 	},
 	async handler(ctx, { data }) {
-		return ctx.db.insert('UserEightsleepTokenData', data);
+		const existingTokenData = await ctx.db.query('UserEightsleepTokenData')
+			.withIndex(
+				'by_user',
+				(q) => q.eq('user', data.user),
+			).unique();
+		if (existingTokenData === null) {
+			return ctx.db.insert('UserEightsleepTokenData', data);
+		} else {
+			ctx.db.patch(existingTokenData._id, data);
+			return existingTokenData;
+		}
 	},
 });

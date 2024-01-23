@@ -71,7 +71,7 @@ export class Eightsleep {
 			expirationUnixTimestamp: Date.now() / 1000 + expires_in,
 		};
 
-		await this.ctx.runMutation(api.v.userEightsleepTokenData.create, {
+		await this.ctx.runMutation(api.v.userEightsleepTokenData.upsert, {
 			data: {
 				user: this.websiteUser,
 				...tokenData,
