@@ -113,7 +113,7 @@ export const updateFromApis = internalAction({
 						DateTime.fromISO(timeEntry.stop).toUnixInteger(),
 				};
 			}).filter((timeEntry: any) =>
-				todayWakeup > timeEntry.startUnixTimestamp
+				todayWakeup < timeEntry.startUnixTimestamp
 			).reverse(),
 			lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
 		};
