@@ -100,23 +100,35 @@ export const updateFromApis = internalAction({
 				};
 			});
 
-		userTodayData = {
-			todayWakeup,
-			yesterdayBedtime,
-			timeEntries: publicTimeEntries.map((timeEntry: any) => {
-				return {
-					description: timeEntry.description as string,
-					startUnixTimestamp: DateTime.fromISO(timeEntry.start as string)
-						.toUnixInteger(),
-					stopUnixTimestamp: timeEntry.stop === null ?
-						null :
-						DateTime.fromISO(timeEntry.stop).toUnixInteger(),
-				};
-			}).filter((timeEntry: any) =>
-				todayWakeup < timeEntry.startUnixTimestamp
-			).reverse(),
-			lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
-		};
+		const todayTimeEntries = publicTimeEntries.map((timeEntry: any) => {
+			return {
+				description: timeEntry.description as string,
+				startUnixTimestamp: DateTime.fromISO(timeEntry.start as string)
+					.toUnixInteger(),
+				stopUnixTimestamp: timeEntry.stop === null ?
+					null :
+					DateTime.fromISO(timeEntry.stop).toUnixInteger(),
+			};
+		}).filter((timeEntry: any) =>
+			todayWakeup < timeEntry.startUnixTimestamp
+		).reverse();
+
+		// If there haven't been any entries today, don't show wake up time
+		if (todayTimeEntries.length == 0) {
+			userTodayData = {
+				todayWakeup: null,
+				yesterdayBedtime: null,
+				timeEntries: [],
+				lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
+			};
+		} else {
+			userTodayData = {
+				todayWakeup,
+				yesterdayBedtime,
+				timeEntries: todayTimeEntries,
+				lastFetchedUnixTimestamp: DateTime.now().toUnixInteger(),
+			};
+		}
 
 		await ctx.runMutation(api.v.userTodayData.upsert, {
 			data: {
