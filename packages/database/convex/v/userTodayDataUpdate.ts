@@ -4,6 +4,7 @@ import { internal } from '#convex/_generated/api.js';
 import { internalAction } from '#convex/_generated/server.js';
 import { Eightsleep } from '@-/eightsleep';
 import { getEnv } from '@-/env';
+import { toPastTense } from '@-/to-past-tense';
 import type { GenericActionCtx } from 'convex/server';
 import { format } from 'date-fns';
 import { DateTime } from 'luxon';
@@ -85,34 +86,32 @@ async function getUserTodayData(
 			!timeEntry.server_deleted_at
 		)
 		.map((timeEntry) => {
-			const publicDescription = timeEntry.description.match(
+			const startUnixTimestamp = DateTime.fromISO(timeEntry.start as string)
+				.toUnixInteger();
+			const stopUnixTimestamp = timeEntry.stop === null ?
+				null :
+				DateTime.fromISO(timeEntry.stop).toUnixInteger();
+
+			let publicDescription = timeEntry.description.match(
 				/\[public:\s*(.*)\]/,
-			);
-			if (publicDescription !== null) {
-				return {
-					...timeEntry,
-					description: publicDescription[1],
-				};
+			)?.[1] ?? timeEntry.description.replace('[public]', '');
+			if (stopUnixTimestamp !== null) {
+				const verb = publicDescription.split(' ')[0];
+				if (verb !== undefined) {
+					publicDescription = publicDescription.replace(
+						verb,
+						toPastTense(verb),
+					);
+				}
 			}
 
 			return {
-				...timeEntry,
-				description: timeEntry.description.replace(
-					'[public]',
-					'',
-				).trim(),
+				description: publicDescription,
+				startUnixTimestamp,
+				stopUnixTimestamp,
 			};
 		})
-		.map((timeEntry) => {
-			return {
-				description: timeEntry.description as string,
-				startUnixTimestamp: DateTime.fromISO(timeEntry.start as string)
-					.toUnixInteger(),
-				stopUnixTimestamp: timeEntry.stop === null ?
-					null :
-					DateTime.fromISO(timeEntry.stop).toUnixInteger(),
-			};
-		})
+		// Only display time entries that started after today's wakeup
 		.filter((timeEntry) =>
 			todayWakeupUnixTimestamp < timeEntry.startUnixTimestamp
 		)

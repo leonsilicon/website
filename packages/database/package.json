@@ -15,6 +15,7 @@
 	"dependencies": {
 		"@-/eightsleep": "workspace:*",
 		"@-/env": "workspace:*",
+		"@-/to-past-tense": "workspace:*",
 		"convex": "^1.8.0",
 		"corvex": "^0.0.28",
 		"date-fns": "^3.3.1",
