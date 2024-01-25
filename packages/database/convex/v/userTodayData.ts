@@ -54,3 +54,12 @@ export const upsert = internalMutation({
 		}
 	},
 });
+
+export const delete_ = internalMutation({
+	args: {
+		where: v.object({ user: v.id('User') }),
+	},
+	async handler(ctx, { where }) {
+		await ctx.db.delete(where.user);
+	},
+});
