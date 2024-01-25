@@ -1,4 +1,6 @@
-import { PresentVerbInflector } from 'natural';
+// We need to import the file directly (otherwise we get a payload too large error in convex)
+// @ts-expect-error: no types
+import PresentVerbInflector from 'natural/lib/natural/inflectors/present_verb_inflector.js';
 // @ts-expect-error: no types
 import symbols from 'symbols';
 import irregularVerbs from '../data/irregular-verbs.json';

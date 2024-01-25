@@ -4,7 +4,6 @@ import { internal } from '#convex/_generated/api.js';
 import { internalAction } from '#convex/_generated/server.js';
 import { Eightsleep } from '@-/eightsleep';
 import { getEnv } from '@-/env';
-import { toPastTense } from '@-/to-past-tense';
 import type { GenericActionCtx } from 'convex/server';
 import { format } from 'date-fns';
 import { DateTime } from 'luxon';
@@ -94,16 +93,7 @@ async function getUserTodayData(
 
 			let publicDescription = timeEntry.description.match(
 				/\[public:\s*(.*)\]/,
-			)?.[1] ?? timeEntry.description.replace('[public]', '');
-			if (stopUnixTimestamp !== null) {
-				const verb = publicDescription.split(' ')[0];
-				if (verb !== undefined) {
-					publicDescription = publicDescription.replace(
-						verb,
-						toPastTense(verb),
-					);
-				}
-			}
+			)?.[1] ?? timeEntry.description.replace(/\s*\[public\]/, '');
 
 			return {
 				description: publicDescription,
