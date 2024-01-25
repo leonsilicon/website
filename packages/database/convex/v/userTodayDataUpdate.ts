@@ -1,6 +1,6 @@
 'use node';
 
-import { api, fullApi } from '#convex/_generated/api.js';
+import { internal } from '#convex/_generated/api.js';
 import { internalAction } from '#convex/_generated/server.js';
 import { Eightsleep } from '@-/eightsleep';
 import { getEnv } from '@-/env';
@@ -24,7 +24,7 @@ async function getUserTodayData(
 	} = getEnv();
 
 	const eightsleepTokenData = await ctx.runQuery(
-		fullApi.v.userEightsleepTokenData.get,
+		internal.v.userEightsleepTokenData.get,
 		{ from: { user } },
 	);
 
@@ -133,19 +133,19 @@ async function getUserTodayData(
 export const updateFromApis = internalAction({
 	args: {},
 	async handler(ctx) {
-		const userId = await ctx.runMutation(fullApi.v.user.ensure, {
+		const userId = await ctx.runMutation(internal.v.user.ensure, {
 			username: 'leondreamed',
 		});
 		const userTodayData = await getUserTodayData(ctx, userId);
 
 		if (userTodayData === null) {
-			await ctx.runMutation(fullApi.v.userTodayData.delete_, {
+			await ctx.runMutation(internal.v.userTodayData.delete_, {
 				where: {
 					user: userId,
 				},
 			});
 		} else {
-			await ctx.runMutation(fullApi.v.userTodayData.upsert, {
+			await ctx.runMutation(internal.v.userTodayData.upsert, {
 				data: {
 					user: userId,
 					...userTodayData,
