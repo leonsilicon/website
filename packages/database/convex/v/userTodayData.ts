@@ -60,6 +60,15 @@ export const delete_ = internalMutation({
 		where: v.object({ user: v.id('User') }),
 	},
 	async handler(ctx, { where }) {
-		await ctx.db.delete(where.user);
+		const userTodayData = await ctx.db.query('UserTodayData').withIndex(
+			'by_user',
+			(q) => q.eq('user', where.user),
+		).first();
+
+		if (userTodayData === null) {
+			return;
+		}
+
+		await ctx.db.delete(userTodayData._id);
 	},
 });
