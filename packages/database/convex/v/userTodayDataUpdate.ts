@@ -123,7 +123,7 @@ export const updateFromApis = internalAction({
 	args: {},
 	async handler(ctx) {
 		const userId = await ctx.runMutation(internal.v.user.ensure, {
-			username: 'leondreamed',
+			username: 'leonsilicon',
 		});
 		const userTodayData = await getUserTodayData(ctx, userId);
 

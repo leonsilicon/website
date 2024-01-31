@@ -10,7 +10,7 @@ const data = ref();
 	const http = new ConvexHttpClient(convexUrl);
 	data.value = await http.query(api.v.userTodayData.get, {
 		from: {
-			user: { username: "leondreamed" },
+			user: { username: "leonsilicon" },
 		},
 	});
 })();
@@ -37,13 +37,13 @@ const data = ref();
 							'23)
 						</span>
 						<div class="flex flex-row gap-2">
-							<a class="flex" href="https://github.com/leondreamed">
+							<a class="flex" href="https://github.com/leonsilicon">
 								<Icon name="simple-icons:github" />
 							</a>
-							<a class="flex" href="https://linkedin.com/in/leondreamed">
+							<a class="flex" href="https://linkedin.com/in/leonsilicon">
 								<Icon name="simple-icons:linkedin" />
 							</a>
-							<a class="flex" href="https://devpost.com/leondreamed">
+							<a class="flex" href="https://devpost.com/leonsilicon">
 								<Icon name="simple-icons:devpost" />
 							</a>
 						</div>
