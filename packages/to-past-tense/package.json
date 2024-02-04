@@ -1,9 +1,0 @@
-{
-	"name": "@-/to-past-tense",
-	"type": "module",
-	"exports": "./$.ts",
-	"dependencies": {
-		"natural": "^6.10.4",
-		"symbols": "^0.0.6"
-	}
-}

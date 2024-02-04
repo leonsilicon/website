@@ -1,6 +1,6 @@
 import { v } from 'convex/values';
 import { Id } from '../_generated/dataModel.js';
-import { internalMutation } from '../_generated/server.js';
+import { internalMutation, query } from '../_generated/server.js';
 
 export const ensure = internalMutation({
 	args: {
@@ -22,5 +22,17 @@ export const ensure = internalMutation({
 		}
 
 		return userId;
+	},
+});
+
+export const get = query({
+	args: {
+		username: v.string(),
+	},
+	async handler(ctx, { username }) {
+		return ctx.db.query('User').withIndex(
+			'by_username',
+			(q) => q.eq('username', username),
+		).first();
 	},
 });

@@ -1,7 +1,10 @@
 {
 	"name": "@-/eightsleep",
 	"type": "module",
-	"exports": "./$.ts",
+	"exports": "./exports/main.ts",
+	"imports": {
+		"#types/*": "./types/*"
+	},
 	"dependencies": {
 		"@-/database": "workspace:*",
 		"convex": "^1.8.0",

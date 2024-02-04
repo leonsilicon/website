@@ -1,0 +1,16 @@
+{
+	"name": "@-/spotify",
+	"type": "module",
+	"scripts": {
+		"initialize-playlist": "tsx ./scripts/initialize-playlist.ts"
+	},
+	"dependencies": {
+		"@-/database": "workspace:*",
+		"spotify-web-api-node": "^5.0.2"
+	},
+	"devDependencies": {
+		"@-/env": "workspace:*",
+		"@-/paths": "workspace:*",
+		"@types/spotify-web-api-node": "^5.0.11"
+	}
+}

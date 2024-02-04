@@ -17,6 +17,7 @@ import type {
 import type * as crons from "../crons.js";
 import type * as v_user from "../v/user.js";
 import type * as v_userEightsleepTokenData from "../v/userEightsleepTokenData.js";
+import type * as v_userSpotifyTokenData from "../v/userSpotifyTokenData.js";
 import type * as v_userTodayData from "../v/userTodayData.js";
 import type * as v_userTodayDataUpdate from "../v/userTodayDataUpdate.js";
 
@@ -32,6 +33,7 @@ declare const fullApi: ApiFromModules<{
   crons: typeof crons;
   "v/user": typeof v_user;
   "v/userEightsleepTokenData": typeof v_userEightsleepTokenData;
+  "v/userSpotifyTokenData": typeof v_userSpotifyTokenData;
   "v/userTodayData": typeof v_userTodayData;
   "v/userTodayDataUpdate": typeof v_userTodayDataUpdate;
 }>;

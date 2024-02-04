@@ -8,5 +8,7 @@ export function getEnv() {
 		EIGHTSLEEP_PASSWORD: z.string(),
 		EIGHTSLEEP_CLIENT_ID: z.string(),
 		EIGHTSLEEP_CLIENT_SECRET: z.string(),
+		SPOTIFY_CLIENT_ID: z.string(),
+		SPOTIFY_CLIENT_SECRET: z.string(),
 	}).parse(process.env);
 }

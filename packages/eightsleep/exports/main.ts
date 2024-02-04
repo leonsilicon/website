@@ -1,8 +1,7 @@
-import { api } from '@-/database';
+import { EightsleepCredentials, EightsleepTokenData } from '#types/auth.ts';
+import { api, DataModel, Id } from '@-/database';
 import type { GenericActionCtx } from 'convex/server';
 import { format } from 'date-fns';
-import { DataModel, Id } from '../database/convex/_generated/dataModel.js';
-import { EightsleepCredentials, EightsleepTokenData } from './types/auth.ts';
 
 const TOKEN_TIME_BUFFER_SECONDS = 120;
 
