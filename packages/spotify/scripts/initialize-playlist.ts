@@ -59,22 +59,24 @@ for await (
 ) {
 	if (trackResult.success) {
 		console.log(
-			chalk.green(
-				`[Found ${trackResult.song.Title} ${
-					chalk.italic('by')
-				} ${trackResult.song.ArtistsTitle}]`,
-				`${trackResult.track!.name} ${chalk.italic('by')} ${
-					trackResult.track!.artists.map((artist) => artist.name).join(', ')
-				}`,
-			),
+			`#${trackResult.songNumber} ` +
+				chalk.green(
+					`[FOUND - ${trackResult.song.Title} ${
+						chalk.italic('by')
+					} ${trackResult.song.ArtistsTitle}]`,
+				),
+			`${trackResult.track!.name} ${chalk.italic('by')} ${
+				trackResult.track!.artists.map((artist) => artist.name).join(', ')
+			}`,
 		);
 	} else {
 		console.log(
-			chalk.red(
-				`[Not found - ${trackResult.song.Title} ${
-					chalk.italic('by')
-				} ${trackResult.song.ArtistsTitle}]`,
-			),
+			`#${trackResult.songNumber} ` +
+				chalk.red(
+					`[NOT FOUND - ${trackResult.song.Title} ${
+						chalk.italic('by')
+					} ${trackResult.song.ArtistsTitle}]`,
+				),
 		);
 	}
 

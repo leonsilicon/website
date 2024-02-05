@@ -33,7 +33,7 @@ export async function* getMonstercatSpotifyTracks(
 			break;
 		}
 
-		for (const song of songs) {
+		for (const [songIndex, song] of songs.entries()) {
 			const searchQuery = `${song.ArtistsTitle} ${song.Title}`.replaceAll(
 				'.',
 				'',
@@ -44,6 +44,10 @@ export async function* getMonstercatSpotifyTracks(
 			);
 
 			const track = tracks.body.tracks?.items.find((track) => {
+				if (track === null) {
+					return false;
+				}
+
 				const hasArtist = track.artists.some((artist) =>
 					song.ArtistsTitle.includes(artist.name)
 				);
@@ -52,9 +56,14 @@ export async function* getMonstercatSpotifyTracks(
 			});
 
 			if (track === undefined) {
-				yield { success: false, song };
+				yield { success: false, song, songNumber: offset + songIndex + 1 };
 			} else {
-				yield { success: true, song, track };
+				yield {
+					success: true,
+					song,
+					track,
+					songNumber: offset + songIndex + 1,
+				};
 			}
 		}
 	}
