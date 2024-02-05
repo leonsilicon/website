@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import { setTimeout } from 'node:timers/promises';
 import path from 'pathe';
 import SpotifyWebApi from 'spotify-web-api-node';
+import uniqueBy from 'uniqbye';
 import {
 	ensureMonstercatPlaylist,
 	getMonstercatSpotifyTracks,
@@ -85,10 +86,13 @@ for await (
 }
 
 // Add the songs to the playlist
-const trackResults = jsonl.parse(fs.readFileSync(savedTracksFilepath, 'utf8'))
-	.filter(
-		(trackResult: any) => trackResult.success,
-	);
+const trackResults = uniqueBy(
+	jsonl.parse(fs.readFileSync(savedTracksFilepath, 'utf8'))
+		.filter(
+			(trackResult: any) => trackResult.success,
+		),
+	(trackResult: any) => trackResult.track.uri,
+);
 
 for (let i = 0; i < trackResults.length; i += 100) {
 	await spotifyApi.addTracksToPlaylist(
