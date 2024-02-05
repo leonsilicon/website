@@ -5,7 +5,7 @@ import appConfig from '../../app.config.js';
 
 export default defineEventHandler(async (event: any) => {
 	const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = useRuntimeConfig();
-	console.log(useRuntimeConfig());
+
 	const spotifyApi = new SpotifyWebApi({
 		clientId: SPOTIFY_CLIENT_ID,
 		clientSecret: SPOTIFY_CLIENT_SECRET,

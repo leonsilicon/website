@@ -1,26 +1,29 @@
 import SpotifyWebApi from 'spotify-web-api-node';
-import { getSpotifyWebApi } from './api';
-import { getMonstercatPlayerSongs } from './monstercat';
+import { getMonstercatPlayerSongs } from './monstercat.ts';
 
-export async function getMonstercatPlaylist({ api }: { api: SpotifyWebApi }) {
-	const playlists = await api.getUserPlaylists();
+export async function ensureMonstercatPlaylist(
+	{ spotifyApi }: { spotifyApi: SpotifyWebApi },
+) {
+	const playlists = await spotifyApi.getUserPlaylists();
 	let monstercatPlaylist = playlists.body.items.find((item) =>
 		item.name === 'Monstercat'
 	);
 
 	if (monstercatPlaylist === undefined) {
-		monstercatPlaylist = (await api.createPlaylist('Monstercat', {
+		monstercatPlaylist = (await spotifyApi.createPlaylist('Monstercat', {
 			description:
 				'A playlist of Monstercat songs kept in sync with the Monstercat Player Catalog',
 		})).body;
 	}
+
+	return monstercatPlaylist;
 }
 
-export async function getMonstercatSpotifyTracks(
-	{ api }: { api: SpotifyWebApi },
+export async function* getMonstercatSpotifyTracks(
+	{ spotifyApi, offset }: { spotifyApi: SpotifyWebApi; offset: number },
 ) {
 	const limit = 100;
-	for (let offset = 0;; offset += limit) {
+	for (;; offset += limit) {
 		const { Data: songs } = await getMonstercatPlayerSongs({
 			offset,
 			limit,
@@ -31,15 +34,28 @@ export async function getMonstercatSpotifyTracks(
 		}
 
 		for (const song of songs) {
-			const tracks = await api.searchTracks(
-				`${song.ArtistsTitle} ${song.Title}`,
+			const searchQuery = `${song.ArtistsTitle} ${song.Title}`.replaceAll(
+				'.',
+				'',
+			);
+			const tracks = await spotifyApi.searchTracks(
+				searchQuery,
 				{ limit: 10 },
 			);
 
-			console.log(tracks);
-			break;
-		}
+			const track = tracks.body.tracks?.items.find((track) => {
+				const hasArtist = track.artists.some((artist) =>
+					song.ArtistsTitle.includes(artist.name)
+				);
 
-		break;
+				return hasArtist && track.name.includes(song.Title);
+			});
+
+			if (track === undefined) {
+				yield { success: false, song };
+			} else {
+				yield { success: true, song, track };
+			}
+		}
 	}
 }

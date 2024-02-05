@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: any) => {
 	const state = JSON.parse(decodeURIComponent(encodedState));
 	const data = await spotifyApi.authorizationCodeGrant(code);
 	const http = new ConvexHttpClient(appConfig.convexUrl);
-	await http.mutation(api.v.userSpotifyData.upsert, {
+	await http.mutation(api.v.userSpotifyTokenData.upsert, {
 		data: {
 			user: state.userId,
 			accessToken: data.body.access_token,
